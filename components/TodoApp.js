@@ -6,6 +6,7 @@ import TodoForm from './TodoForm'
 import TodoList from './TodoList'
 import { addTodo, clearDone, countDone, countRemaining, deleteTodo, editTodo, filterTodos, toggleTodo } from '@/lib/todos'
 import { loadTodos, saveTodos } from '@/lib/storage'
+import SampleLoader from './SampleLoader'
 
 
 export default function TodoApp() {
@@ -36,6 +37,10 @@ export default function TodoApp() {
     if (!window.confirm('完了済みの TODO を削除しますか？')) return
     setTodos(clearDone(todos))
   }
+  function handleLoadSamples(texts) {
+  setTodos(texts.reduce((acc, text) => addTodo(acc, text), todos))
+}
+
 
   function clearAll() {
     if (!window.confirm('すべての TODO を削除しますか？')) return
@@ -51,6 +56,8 @@ export default function TodoApp() {
     <div>
       <TodoForm onAdd={handleAdd} />
       <TodoFilter value={filter} onChange={setFilter} />
+      <SampleLoader onLoad={handleLoadSamples} />
+
       <TodoList todos={visibleTodos} onToggle={handleToggle} onDelete={handleDelete} onEdit={handleEdit} />
       {todos.length > 0 && (
         <p>
